@@ -3,11 +3,11 @@ package com.spaient.assesment.cache;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class AccessControlLRU<K, V> extends LinkedHashMap<K,V> {
+public class CacheLRU<K, V> extends LinkedHashMap<K,V> {
 
     private int capacity;
 
-    public AccessControlLRU(Integer cacheSize) {
+    public CacheLRU(Integer cacheSize) {
         super(cacheSize, 0.75f, true);
         this.capacity = cacheSize;
     }

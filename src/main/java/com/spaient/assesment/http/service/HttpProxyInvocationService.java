@@ -20,6 +20,9 @@ public class HttpProxyInvocationService {
     HttpRestTemplateBuilder httpRestTemplateBuilder;
 
     @Autowired
+    RestInvocationService restInvocationService;
+
+    @Autowired
     ObjectMapper objectMapper;
 
     @Value("${API_ENDPOINT}")
@@ -32,15 +35,18 @@ public class HttpProxyInvocationService {
     public HttpResponseEntity invokeGetCall(Map<String, String> paramMappings) {
         paramMappings.put("APIkey", apiKey);
         JsonModel jsonModel = JsonModel.builder().pathQueryParameters(paramMappings).build();
-        RestInvocationService restInvocationService = RestInvocationService.builder()
-                .restTemplate(httpRestTemplateBuilder.buildRestTemplate()).objectMapper(objectMapper).build();
+        /*RestInvocationService restInvocationService = RestInvocationService.builder()
+                .objectMapper(objectMapper).build();*/
+
+        /*RestInvocationService restInvocationService = RestInvocationService.builder()
+                .restTemplate(httpRestTemplateBuilder.buildRestTemplate()).objectMapper(objectMapper).build();*/
         return restInvocationService.processHttpRequest(apiUrl, HttpMethod.GET, jsonModel);
     }
 
-    public HttpResponseEntity invokePutCall(Map<String, String> paramMappings, Object requestBody) {
+    /*public HttpResponseEntity invokePutCall(Map<String, String> paramMappings, Object requestBody) {
         JsonModel jsonModel = JsonModel.builder().pathQueryParameters(paramMappings).bodyParameters(requestBody).build();
         RestInvocationService restInvocationService = RestInvocationService.builder().restTemplate(httpRestTemplateBuilder.buildRestTemplate()).objectMapper(objectMapper).build();
         return restInvocationService.processHttpRequest(apiUrl, HttpMethod.PUT, jsonModel);
-    }
+    }*/
 
 }

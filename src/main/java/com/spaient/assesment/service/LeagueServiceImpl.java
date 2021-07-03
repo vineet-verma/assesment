@@ -10,10 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.net.ssl.HostnameVerifier;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -38,10 +36,11 @@ public class LeagueServiceImpl implements LeagueService {
             map.put("action", "get_standings");
             map.put("league_id", league_id);
             HttpResponseEntity httpResponseEntity = httpProxyInvocationService.invokeGetCall(map);
+            List<Standing> standings = Collections.emptyList();
             if (httpResponseEntity.getStatus() == Status.SUCCESS) {
                 try {
                     String response = objectMapper.writeValueAsString(httpResponseEntity.getResponseBody());
-                    List<Standing> standings = objectMapper.readValue(response, new ArrayList<Standing>().getClass());
+                    standings = objectMapper.readValue(response, new ArrayList<Standing>().getClass());
                     cache.put(league_id, standings);
                 } catch (Exception e) {
                     log.error("Failed to map response from client server-{}", httpResponseEntity.getResponseBody());
@@ -50,7 +49,7 @@ public class LeagueServiceImpl implements LeagueService {
             } else {
                 //return new ResponseEntity<>(httpResponseEntity.getErrorMsg(), HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            return null;
+            return standings;
         }
     }
 

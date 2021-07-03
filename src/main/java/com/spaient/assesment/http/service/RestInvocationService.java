@@ -7,10 +7,12 @@ import com.spaient.assesment.http.model.JsonModel;
 import com.spaient.assesment.http.model.Status;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -18,8 +20,10 @@ import java.util.Map;
 
 @Slf4j
 @Builder
+@Component
 public class RestInvocationService {
 
+    @Autowired
     private RestTemplate restTemplate;
 
     private ObjectMapper objectMapper;

@@ -31,6 +31,8 @@ public class AssesmentApplication {
 		SpringApplication.run(AssesmentApplication.class, args);
 	}
 
+
+	// below code is for bypassing the SSL
 	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder) throws NoSuchAlgorithmException, KeyManagementException {
 

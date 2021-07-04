@@ -1,6 +1,6 @@
 package com.spaient.assesment;
 
-import com.spaient.assesment.service.LeagueService;
+import com.spaient.assesment.service.StarwarService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -22,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan
 public class ControllerTests {
     @Autowired
-    LeagueService leagueService;
+    StarwarService starwarService;
 
     @Autowired
     MockMvc mvc;
@@ -34,21 +32,63 @@ public class ControllerTests {
     }
 
     @Test
-    public void listFootballStandingsTest() throws Exception{
+    public void getPlanetDetailsTest() throws Exception {
 
-        mvc.perform(get("/league/standings/148"))
+        mvc.perform(get("/starwars/display/planets/Tatooine"))
                 .andDo(print())
                 .andExpect(status().isOk());
 
 
     }
+
     @Test
-    public void listFootballCountries() throws Exception{
+    public void getStartshipDetailsTest() throws Exception {
 
-        mvc.perform(get("/league/standings/country"))
+        mvc.perform(get("/starwars/display/starships/X-wing"))
                 .andDo(print())
                 .andExpect(status().isOk());
 
 
     }
+
+    @Test
+    public void getVehicleDetailsTest() throws Exception {
+
+        mvc.perform(get("/starwars/display/vehicle/Snowspeeder"))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+
+    }
+
+    @Test
+    public void getPeopleDetailsTest() throws Exception {
+
+        mvc.perform(get("/starwars/display/people/Luke Skywalker"))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+
+    }
+
+    @Test
+    public void getFilmsDetailsTest() throws Exception {
+
+        mvc.perform(get("/starwars/display/films/A New Hope"))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+
+    }
+
+    @Test
+    public void getSpeciesDetailsTest() throws Exception {
+
+        mvc.perform(get("/starwars/display/species/Rodian"))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+
+    }
+
 }

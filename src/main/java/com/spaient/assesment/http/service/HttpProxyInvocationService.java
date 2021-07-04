@@ -24,12 +24,8 @@ public class HttpProxyInvocationService {
     @Value("${API_ENDPOINT}")
     private String apiUrl;
 
-    @Value("${API_KEY}")
-    private String apiKey;
-
 
     public HttpResponseEntity invokeGetCall(Map<String, String> paramMappings) {
-        paramMappings.put("APIkey", apiKey);
         JsonModel jsonModel = JsonModel.builder().pathQueryParameters(paramMappings).build();
         return restInvocationService.processHttpRequest(apiUrl, HttpMethod.GET, jsonModel);
     }

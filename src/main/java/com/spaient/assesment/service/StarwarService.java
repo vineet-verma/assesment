@@ -1,14 +1,11 @@
 package com.spaient.assesment.service;
 
-import com.spaient.assesment.model.Country;
-import com.spaient.assesment.model.Standing;
+import com.spaient.assesment.model.MovieDetail;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public interface LeagueService {
+public interface StarwarService {
 
-    List<Standing> getStandings(String league_id);
-    List<Country> getCountries();
+    public MovieDetail findDetails(String type, String name) throws Exception;
+
 }

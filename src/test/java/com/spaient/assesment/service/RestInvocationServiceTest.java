@@ -42,7 +42,6 @@ public class RestInvocationServiceTest {
     @BeforeEach
     void configureApplication() {
         ResponseEntity<Object> entity = new ResponseEntity<>(HttpStatus.ACCEPTED);
-        //restTemplate = spy(restTemplate);
         when(restTemplate.exchange(anyString(), any(), any(), (Class<Object>) any())).thenReturn(entity);
         restInvocationService = new RestInvocationService(restTemplate,new ObjectMapper());
     }
@@ -50,9 +49,8 @@ public class RestInvocationServiceTest {
     @Test
     public void processHttpRequestTest() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put("APIkey", "");
         JsonModel jsonModel = JsonModel.builder().pathQueryParameters(map).build();
-        HttpResponseEntity httpResponseEntity = restInvocationService.processHttpRequest("http://stands", HttpMethod.GET, jsonModel);
+        HttpResponseEntity httpResponseEntity = restInvocationService.processHttpRequest("https://swapi.dev/api/species", HttpMethod.GET, jsonModel);
         Assertions.assertNotNull(httpResponseEntity);
     }
 }

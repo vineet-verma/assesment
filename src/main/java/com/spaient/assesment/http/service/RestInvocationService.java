@@ -51,7 +51,8 @@ public class RestInvocationService {
     private String mapURLParameter(String url, Map<String, String> pathQueryVariableMappings) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
         for (Map.Entry<String, String> entry : pathQueryVariableMappings.entrySet()) {
-            builder.queryParam(entry.getKey(), entry.getValue());
+           // builder.queryParam(entry.getKey(), entry.getValue());
+            builder.pathSegment(entry.getValue());
         }
         return builder.toUriString();
     }

@@ -5,6 +5,7 @@ import com.spaient.assesment.exception.ProcessingException;
 import com.spaient.assesment.http.model.HttpResponseEntity;
 import com.spaient.assesment.http.model.JsonModel;
 import com.spaient.assesment.http.model.Status;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,11 @@ import java.util.Map;
 @Slf4j
 @Builder
 @Component
+@AllArgsConstructor
 public class RestInvocationService {
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    private ObjectMapper objectMapper;
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
 
     public HttpResponseEntity processHttpRequest(String targetURL, HttpMethod httpMethod, JsonModel jsonModel) {
         HttpHeaders httpHeaders = buildHttpBasicAuthRequestHeader();
@@ -39,12 +39,8 @@ public class RestInvocationService {
             log.info("Http Invocation Successful");
             Object responseBody = null;
             if (response.getBody() != null)
-                try {
-                    responseBody = response.getBody();
-                } catch (Exception e) {
-                    log.error("Response parsing exception - {},{}", response.getBody(), e);
-                    throw new ProcessingException("Response parsing exception -" + e.getMessage());
-                }
+                responseBody = response.getBody();
+
             return HttpResponseEntity.builder().status(Status.SUCCESS).responseBody(responseBody).build();
         } else {
             log.error("Http Invocation Failed");

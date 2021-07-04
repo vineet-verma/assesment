@@ -1,9 +1,9 @@
 package com.spaient.assesment.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spaient.assesment.http.service.HttpProxyInvocationService;
-import com.spaient.assesment.model.Country;
-import com.spaient.assesment.model.Standing;
+import com.spaient.assesment.http.model.HttpResponseEntity;
+import com.spaient.assesment.http.model.JsonModel;
+import com.spaient.assesment.http.service.RestInvocationService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,12 +15,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -31,41 +33,26 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ComponentScan
-class LeagueServiceImplTest {
-
-    @Autowired
-    LeagueService leagueService;
-
-    @Autowired
-    MockMvc mvc;
-
-    @Autowired
-    HttpProxyInvocationService httpProxyInvocationService;
-
-    @Autowired
-    ObjectMapper objectMapper;
-
+public class RestInvocationServiceTest {
     @Mock
     RestTemplate restTemplate;
 
+    RestInvocationService restInvocationService;
+
     @BeforeEach
     void configureApplication() {
+        ResponseEntity<Object> entity = new ResponseEntity<>(HttpStatus.ACCEPTED);
+        //restTemplate = spy(restTemplate);
+        when(restTemplate.exchange(anyString(), any(), any(), (Class<Object>) any())).thenReturn(entity);
+        restInvocationService = new RestInvocationService(restTemplate,new ObjectMapper());
     }
 
     @Test
-    void getStandingsTest() {
-        leagueService = new LeagueServiceImpl(httpProxyInvocationService, objectMapper);
-        List<Standing> standingList = leagueService.getStandings("148");
-        Assertions.assertEquals(true, standingList.size() > 0);
+    public void processHttpRequestTest() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("APIkey", "");
+        JsonModel jsonModel = JsonModel.builder().pathQueryParameters(map).build();
+        HttpResponseEntity httpResponseEntity = restInvocationService.processHttpRequest("http://stands", HttpMethod.GET, jsonModel);
+        Assertions.assertNotNull(httpResponseEntity);
     }
-
-
-    @Test
-    void getCountriesTest() {
-        leagueService = new LeagueServiceImpl(httpProxyInvocationService, objectMapper);
-        List<Country> countriesList = leagueService.getCountries();
-        Assertions.assertEquals(true, countriesList.size() > 0);
-    }
-
-
 }

@@ -1,5 +1,6 @@
 package com.spaient.assesment;
 
+import com.spaient.assesment.model.Country;
 import com.spaient.assesment.model.Standing;
 import com.spaient.assesment.service.LeagueService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +20,17 @@ public class LeagueController {
     @Autowired
     LeagueService leagueService;
 
-
     @RequestMapping(value = "/standings/{leagueId}",
             method = RequestMethod.GET)
     public List<Standing> listFootballStandings(@PathVariable("leagueId") String leagueId) {
         return leagueService.getStandings(leagueId);
     }
+
+    @RequestMapping(value = "/standings/country",
+            method = RequestMethod.GET)
+    public List<Country> listFootballCountries() {
+        return leagueService.getCountries();
+    }
+
+
 }

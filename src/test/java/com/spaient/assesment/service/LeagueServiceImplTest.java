@@ -2,6 +2,7 @@ package com.spaient.assesment.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spaient.assesment.http.service.HttpProxyInvocationService;
+import com.spaient.assesment.model.Country;
 import com.spaient.assesment.model.Standing;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +13,6 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
@@ -53,10 +54,21 @@ class LeagueServiceImplTest {
         restTemplate = spy(restTemplate);
         when(restTemplate.exchange(anyString(), any(), any(), Matchers.<ParameterizedTypeReference<List<Object>>>any())).thenReturn(entity);
     }
+
     @Test
     void getStandingsTest() {
-        leagueService = new LeagueServiceImpl(httpProxyInvocationService,objectMapper);
+        leagueService = new LeagueServiceImpl(httpProxyInvocationService, objectMapper);
         List<Standing> standingList = leagueService.getStandings("148");
-        Assertions.assertEquals(20,standingList.size());
+        Assertions.assertEquals(true, standingList.size() > 0);
     }
+
+
+    @Test
+    void getCountriesTest() {
+        leagueService = new LeagueServiceImpl(httpProxyInvocationService, objectMapper);
+        List<Country> countriesList = leagueService.getCountries();
+        Assertions.assertEquals(true, countriesList.size() > 0);
+    }
+
+
 }

@@ -3,12 +3,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-               bat 'mvn clean install -B -DskipTests'
+               bat 'mvn clean install'
             }
         }
         stage('Test') {
             steps {
-                bat 'mvn test'
+                bat 'mvn clean test'
             }
             post {
                 always {
@@ -16,5 +16,11 @@ pipeline {
                 }
             }
         }
+        stage('Deploy') {
+                    steps {
+                        bat 'docker build -t assesment .'
+                        bat 'docker run -p 8080:8080 assesment'
+                    }
+                }
     }
 }

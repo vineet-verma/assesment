@@ -1,5 +1,7 @@
 package com.spaient.assesment;
 
+import com.spaient.assesment.exception.BadRequestException;
+import com.spaient.assesment.exception.NoRecordFoundException;
 import com.spaient.assesment.model.MovieDetail;
 import com.spaient.assesment.model.PeopleResponse;
 import com.spaient.assesment.service.StarwarService;
@@ -21,14 +23,31 @@ public class StarwarController {
     @RequestMapping(value = "/display/{type}/{name}",
             method = RequestMethod.GET)
     public MovieDetail findDetails(@PathVariable("type") String type, @PathVariable("name") String name) throws Exception {
-        return starwarService.findDetails(type, name);
+        MovieDetail result = null;
+        try {
+            result = starwarService.findDetails(type, name);
+        } catch (BadRequestException e) {
+            throw new BadRequestException(e.getMessage());
+        }
+        if (result == null) {
+            throw new NoRecordFoundException("No Record found with type : " + type + " and name :" + name);
+        }
+        return result;
     }
 
     @RequestMapping(value = "/display/{type}",
             method = RequestMethod.GET)
     public PeopleResponse findListByType(@PathVariable("type") String type) throws Exception {
-        return starwarService.findListByType(type);
-
+        PeopleResponse result = null;
+        try {
+            result = starwarService.findListByType(type);
+        } catch (BadRequestException e) {
+            throw new BadRequestException(e.getMessage());
+        }
+        if (result == null) {
+            throw new NoRecordFoundException("No Record found with type : " + type);
+        }
+        return result;
 
     }
 

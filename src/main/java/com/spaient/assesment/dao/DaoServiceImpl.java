@@ -43,7 +43,7 @@ public class DaoServiceImpl implements DaoService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return MovieDetail.builder().build();
+        return null;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class DaoServiceImpl implements DaoService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return MovieDetail.builder().build();
+        return null;
     }
 
     @Override
@@ -73,7 +73,7 @@ public class DaoServiceImpl implements DaoService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return MovieDetail.builder().build();
+        return null;
     }
 
     @Override
@@ -86,7 +86,7 @@ public class DaoServiceImpl implements DaoService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return MovieDetail.builder().build();
+        return null;
     }
 
     @Override
@@ -102,7 +102,7 @@ public class DaoServiceImpl implements DaoService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return MovieDetail.builder().build();
+        return null;
     }
 
     @Override
@@ -117,7 +117,7 @@ public class DaoServiceImpl implements DaoService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return MovieDetail.builder().build();
+        return null;
     }
 
 
@@ -168,7 +168,7 @@ public class DaoServiceImpl implements DaoService {
     }
 
     @Scheduled(initialDelay = 0, fixedRate = 50000)
-    public void cronJobSch() throws Exception {
+    public void cronJobSch() {
 
         for (EventType eventType : EventType.values()) {
             Map<String, String> map = new HashMap<>();
@@ -181,7 +181,6 @@ public class DaoServiceImpl implements DaoService {
                 } catch (Exception e) {
                     log.error("Failed to map response from client server-{}", httpResponseEntity.getResponseBody());
                 }
-            } else {
             }
         }
 

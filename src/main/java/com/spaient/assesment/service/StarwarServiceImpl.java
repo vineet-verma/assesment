@@ -42,10 +42,12 @@ public class StarwarServiceImpl implements StarwarService {
     @Override
     public PeopleResponse findListByType(String type) throws Exception {
         if (!Helper.validateStarWarsType(type)) {
-            throw new Exception("type is not valid, Please send valid types e.g: " + EventType.values());
+            throw new BadRequestException("type is not valid, Please send valid types e.g: " + EventType.values());
         }
         TAPIResponse tapiResponse = daoService.findListByType(type);
-        PeopleResponse response = Helper.convertDTOinResponse(tapiResponse);
-        return response;
+        if (tapiResponse != null) {
+            return Helper.convertDTOinResponse(tapiResponse);
+        }
+        return null;
     }
 }

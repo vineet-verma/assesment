@@ -87,7 +87,7 @@ public class ControllerIntegrationTests {
 
         mvc.perform(get("/starwars/display/species/Rodian"))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
 
 
     }

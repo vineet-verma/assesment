@@ -1,6 +1,7 @@
 package com.spaient.assesment;
 
 import com.spaient.assesment.model.MovieDetail;
+import com.spaient.assesment.model.PeopleResponse;
 import com.spaient.assesment.service.StarwarService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,12 @@ public class StarwarController {
             method = RequestMethod.GET)
     public MovieDetail findDetails(@PathVariable("type") String type, @PathVariable("name") String name) throws Exception {
         return starwarService.findDetails(type, name);
+    }
+
+    @RequestMapping(value = "/display/{type}",
+            method = RequestMethod.GET)
+    public PeopleResponse findListByType(@PathVariable("type") String type) throws Exception {
+        return starwarService.findListByType(type);
 
 
     }

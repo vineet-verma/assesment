@@ -2,6 +2,7 @@ package com.spaient.assesment.http.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spaient.assesment.exception.ProcessingException;
+import com.spaient.assesment.exception.RecoverableException;
 import com.spaient.assesment.http.model.HttpResponseEntity;
 import com.spaient.assesment.http.model.JsonModel;
 import com.spaient.assesment.http.model.Status;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.backoff.ExponentialBackOff;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -29,6 +31,15 @@ public class RestInvocationService {
     private final ObjectMapper objectMapper;
 
     public HttpResponseEntity processHttpRequest(String targetURL, HttpMethod httpMethod, JsonModel jsonModel) {
+        try {
+            return processHttpRequestInvoke(targetURL, httpMethod, jsonModel);
+        } catch (RecoverableException e) {
+            // exponentialBackOff retry logic
+            throw new ProcessingException(e.getMessage());
+        }
+    }
+
+    public HttpResponseEntity processHttpRequestInvoke(String targetURL, HttpMethod httpMethod, JsonModel jsonModel) {
         HttpHeaders httpHeaders = buildHttpBasicAuthRequestHeader();
         HttpEntity<Object> httpEntity = new HttpEntity<>(jsonModel.getBodyParameters(), httpHeaders);
 
@@ -44,14 +55,15 @@ public class RestInvocationService {
             return HttpResponseEntity.builder().status(Status.SUCCESS).responseBody(responseBody).build();
         } else {
             log.error("Http Invocation Failed");
-            return HttpResponseEntity.builder().status(Status.FAILURE).errorMsg("[TARGET SERVICE RESPONSE] - " + response.getStatusCodeValue()).build();
+            throw new RecoverableException("API INVOKE ERROR with error" + response.getStatusCodeValue());
+            // return HttpResponseEntity.builder().status(Status.FAILURE).errorMsg("[TARGET SERVICE RESPONSE] - " + response.getStatusCodeValue()).build();
         }
     }
 
     private String mapURLParameter(String url, Map<String, String> pathQueryVariableMappings) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
         for (Map.Entry<String, String> entry : pathQueryVariableMappings.entrySet()) {
-           // builder.queryParam(entry.getKey(), entry.getValue());
+            // builder.queryParam(entry.getKey(), entry.getValue());
             builder.pathSegment(entry.getValue());
         }
         return builder.toUriString();

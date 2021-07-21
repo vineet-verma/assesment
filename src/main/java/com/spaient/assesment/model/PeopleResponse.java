@@ -5,13 +5,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class MovieDetail {
-    private String type;
-    private int count;
-    private String name;
-    private Object object;
+public class PeopleResponse {
+    private String totalCount;
+    private String nextPage;
+    private String prevPage;
+    List<IPeople> peoples;
+
+
 }

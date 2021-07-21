@@ -21,7 +21,7 @@ public class HttpProxyInvocationService {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Value("${API_ENDPOINT}")
+    @Value("${api.endpoint}")
     private String apiUrl;
 
 

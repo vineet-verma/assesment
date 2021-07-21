@@ -38,11 +38,9 @@ class StarwarServiceImplTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @Mock
-    RestTemplate restTemplate;
-
     @BeforeEach
     void configureApplication() {
+
     }
 
     @Test
@@ -84,5 +82,11 @@ class StarwarServiceImplTest {
         MovieDetail movieDetail = starwarService.findDetails("people", "Luke Skywalker");
         Assertions.assertEquals("people", movieDetail.getType());
     }
-
+    @Test
+    @ExceptionHandler
+    void getTypeTest() throws Exception {
+        starwarService = new StarwarServiceImpl(daoService);
+        MovieDetail movieDetail = starwarService.findDetails("people", "Luke Skywalker");
+        Assertions.assertEquals("people", movieDetail.getType());
+    }
 }
